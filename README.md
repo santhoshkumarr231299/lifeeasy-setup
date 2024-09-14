@@ -11,6 +11,9 @@ Before you begin, ensure you have the following software installed:
 
 2. **Docker**: Essential for containerizing and managing application services.
    - [Download and install Docker](https://docs.docker.com/get-docker/)
+3. Razorpay Payment Integration
+4. Mail Integration
+5. Rapid Api Integration
 
 ## Installation
 
