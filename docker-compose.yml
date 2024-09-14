@@ -88,6 +88,21 @@ services:
     networks:
         - lifeeasy-network
 
+  lifeeasy-chat-server:
+    build:
+      context: ./lifeeasy-chat-server/
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    depends_on:
+      - lifeeasy-server
+    env_file:
+      - .env.chat-server
+    # environment:
+    #   PORT: ${PORT}
+    networks:
+        - lifeeasy-network
+
 networks:
   lifeeasy-network:
     driver: bridge
