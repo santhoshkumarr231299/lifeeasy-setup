@@ -1,4 +1,0 @@
-fileignoreconfig:
-- filename: .env.chat-server
-  checksum: 062001c529c49ef0caa18d9f4d58597f96e789de410054ebc5adc4a0223c6974
-version: "1.0"
