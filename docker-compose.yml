@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  mysql:
+      image: mysql:latest
+      container_name: lifeeasy-db
+      env_file:
+        - .env.mysql
+      # environment:
+        # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      networks:
+        - lifeeasy-network
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--silent"]
+        interval: 10s
+        retries: 5
+        start_period: 30s
+        timeout: 5s
+
+  lifeeasy-client:
+    mem_limit: 3g
+    build:
+      context: ./lifeeasy-client/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.client
+    # environment:
+    #   REACT_APP_ENV: ${REACT_APP_ENV}
+    #   REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
+    #   REACT_APP_BASE_URL_CHAT: ${REACT_APP_BASE_URL_CHAT}
+    #   REACT_APP_BASE_URL_ONLINE: ${REACT_APP_BASE_URL_ONLINE}
+    #   REACT_APP_RAZORPAY_PAYMENT_KEY_ID: ${REACT_APP_RAZORPAY_PAYMENT_KEY_ID}
+    #   REACT_APP_SECRET_COOKIE_KEY: ${REACT_APP_SECRET_COOKIE_KEY}
+    #   REACT_APP_SERVER_AUTH_NAME: ${REACT_APP_SERVER_AUTH_NAME}
+    #   REACT_APP_SECRET_NEW_USER_AUTH_KEY: ${REACT_APP_SECRET_NEW_USER_AUTH_KEY}
+    #   REACT_APP_SUPER_BASE_API: ${REACT_APP_SUPER_BASE_API}
+    #   REACT_APP_RAPID_API_URL: ${REACT_APP_RAPID_API_URL}
+    #   REACT_APP_RAPID_API_KEY: ${REACT_APP_RAPID_API_KEY}
+    #   REACT_APP_RAPID_HOST: ${REACT_APP_RAPID_HOST}
+    #   REACT_APP_FORGOT_PASS_CHANGE_AUTH: ${REACT_APP_FORGOT_PASS_CHANGE_AUTH}
+    #   REACT_APP_LOCALSTORAGE_USER_LOGIN_STATUS: ${REACT_APP_LOCALSTORAGE_USER_LOGIN_STATUS}
+    #   REACT_APP_PRODUCT_FIRST_NAME: ${REACT_APP_PRODUCT_FIRST_NAME}
+    #   REACT_APP_PRODUCT_LAST_NAME: ${REACT_APP_PRODUCT_LAST_NAME}
+    networks:
+        - lifeeasy-network
+
+  lifeeasy-server:
+    build:
+      context: ./lifeeasy-server/
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    env_file:
+      - .env.server
+    # environment:
+    #   PORT: ${PORT}
+    #   PRODUCTION: ${PRODUCTION}
+    #   ADMIN_USER_NAME: ${ADMIN_USER_NAME}
+    #   AUTH_NAME: ${AUTH_NAME}
+    #   BRAND_NAME: ${BRAND_NAME}
+    #   CHAT_BASE_PATH: ${CHAT_BASE_PATH}
+    #   CLIENT_BASE_URL: ${CLIENT_BASE_URL}
+    #   DB_LOCAL_CON_LIMMIT: ${DB_LOCAL_CON_LIMMIT}
+    #   DB_LOCAL_PORT: ${DB_LOCAL_PORT}
+    #   DB_LOCAL_HOST: ${DB_LOCAL_HOST}
+    #   DB_LOCAL_USER: ${DB_LOCAL_USER}
+    #   DB_LOCAL_PASSWORD: ${DB_LOCAL_PASSWORD}
+    #   DB_LOCAL_DBNAME: ${DB_LOCAL_DBNAME}
+    #   FORGOT_PASS_CHANGE_AUTH: ${FORGOT_PASS_CHANGE_AUTH}
+    #   JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+    #   MAIL_AUTH_PASSWORD: ${MAIL_AUTH_PASSWORD}
+    #   MAIL_AUTH_USERNAME: ${MAIL_AUTH_USERNAME}
+    #   MAIL_OTP_EXPIRY_MINUTE: ${MAIL_OTP_EXPIRY_MINUTE}
+    #   MAIL_SERVICE_NAME: ${MAIL_SERVICE_NAME}
+    #   NEW_USER_AUTH_KEY: ${NEW_USER_AUTH_KEY}
+    #   NODE_VERSION: ${NODE_VERSION}
+    #   RAPID_API_KEY: ${RAPID_API_KEY}
+    #   RAPID_API_URL: ${RAPID_API_URL}
+    #   RAPID_HOST: ${RAPID_HOST}
+    #   RAZORPAY_PAYMENT_KEY_ID: ${RAZORPAY_PAYMENT_KEY_ID}
+    #   RAZORPAY_PAYMENT_KEY_SECRET: ${RAZORPAY_PAYMENT_KEY_SECRET}
+    #   SUPER_API_BASE_PATH: ${SUPER_API_BASE_PATH}
+    networks:
+        - lifeeasy-network
+
+networks:
+  lifeeasy-network:
+    driver: bridge
