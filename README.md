@@ -21,6 +21,14 @@ Follow the below step to set up the client and server:
 
 ```sh install.sh```
 
+## Configure the Environment Variables
+
+Most of the variables are set to their default values.
+
+1. .env.client
+2. .env.server
+3. .env.chat-server
+
 ## Starting the Application
 
 To start the application, run:
