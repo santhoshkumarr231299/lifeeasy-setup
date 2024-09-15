@@ -40,3 +40,11 @@ To start the application, run:
 To shut down the application, run:
 
 ```sh shutdown.sh```
+
+## Cleaning up the Application
+
+To cleanup the application, run:
+
+```sh cleanup.sh```
+
+This will remove all the running containers, images, volumes, and networks in Docker.
